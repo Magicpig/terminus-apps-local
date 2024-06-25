@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: relay
-        image: otmoic/relay:6cfd8a13
+        image: otmoic/relay:c8f33138
         ports:
           - containerPort: 9102
         resources:

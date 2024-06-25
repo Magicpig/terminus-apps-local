@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: web-app
-        image: otmoic/otmoic-relay-web:latest
+        image: otmoic/relay-web:df518e18
         resources:
           requests:
             cpu: 1m
@@ -50,5 +50,5 @@ spec:
         command:
           - /bin/sh
           - '-c'
-          - cp website_test website -r && /app/obridgeweb
+          - cp website_test website -r && /app/otmoicweb
 
