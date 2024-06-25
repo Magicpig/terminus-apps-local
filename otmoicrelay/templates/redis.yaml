@@ -3,23 +3,23 @@ apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: true
 metadata:
-  name: obridge-relay-db-redis
+  name: otmoic-relay-db-redis
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: obridge-relay-db-redis
+  name: otmoic-relay-db-redis
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
@@ -29,12 +29,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: obridge-relay-db-redis-configuration
+  name: otmoic-relay-db-redis-configuration
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
 data:
   redis.conf: |-
@@ -61,12 +61,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: obridge-relay-db-redis-health
+  name: otmoic-relay-db-redis-health
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
 data:
   ping_readiness_local.sh: |-
@@ -168,12 +168,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: obridge-relay-db-redis-scripts
+  name: otmoic-relay-db-redis-scripts
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
 data:
   start-master.sh: |
@@ -248,12 +248,12 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-redis-headless
+  name: otmoic-relay-db-redis-headless
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
   annotations:
     
@@ -266,18 +266,18 @@ spec:
       targetPort: redis
   selector:
     app.kubernetes.io/name: redis
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
 ---
 # Source: redis/templates/master/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-redis-master
+  name: otmoic-relay-db-redis-master
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: master
 spec:
@@ -291,19 +291,19 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/name: redis
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/component: master
 ---
 # Source: redis/templates/replicas/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-redis-replicas
+  name: otmoic-relay-db-redis-replicas
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: replica
 spec:
@@ -317,19 +317,19 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/name: redis
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/component: replica
 ---
 # Source: redis/templates/master/application.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: obridge-relay-db-redis-master
+  name: otmoic-relay-db-redis-master
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: master
 spec:
@@ -337,9 +337,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: redis
-      app.kubernetes.io/instance: obridge-relay-db-redis
+      app.kubernetes.io/instance: otmoic-relay-db-redis
       app.kubernetes.io/component: master
-  serviceName: obridge-relay-db-redis-headless
+  serviceName: otmoic-relay-db-redis-headless
   updateStrategy:
     type: RollingUpdate
   template:
@@ -347,7 +347,7 @@ spec:
       labels:
         app.kubernetes.io/name: redis
         helm.sh/chart: redis-17.8.0
-        app.kubernetes.io/instance: obridge-relay-db-redis
+        app.kubernetes.io/instance: otmoic-relay-db-redis
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: master
       # annotations:
@@ -359,7 +359,7 @@ spec:
       
       securityContext:
         fsGroup: 1001
-      serviceAccountName: obridge-relay-db-redis
+      serviceAccountName: otmoic-relay-db-redis
       affinity:
         podAffinity:
           
@@ -369,7 +369,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: redis
-                    app.kubernetes.io/instance: obridge-relay-db-redis
+                    app.kubernetes.io/instance: otmoic-relay-db-redis
                     app.kubernetes.io/component: master
                 topologyKey: kubernetes.io/hostname
               weight: 1
@@ -397,7 +397,7 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-redis
+                  name: otmoic-relay-db-redis
                   key: redis-password
             - name: REDIS_TLS_ENABLED
               value: "no"
@@ -452,15 +452,15 @@ spec:
       volumes:
         - name: start-scripts
           configMap:
-            name: obridge-relay-db-redis-scripts
+            name: otmoic-relay-db-redis-scripts
             defaultMode: 0755
         - name: health
           configMap:
-            name: obridge-relay-db-redis-health
+            name: otmoic-relay-db-redis-health
             defaultMode: 0755
         - name: config
           configMap:
-            name: obridge-relay-db-redis-configuration
+            name: otmoic-relay-db-redis-configuration
         - name: redis-tmp-conf
           emptyDir: {}
         - name: tmp
@@ -470,7 +470,7 @@ spec:
         name: redis-data
         labels:
           app.kubernetes.io/name: redis
-          app.kubernetes.io/instance: obridge-relay-db-redis
+          app.kubernetes.io/instance: otmoic-relay-db-redis
           app.kubernetes.io/component: master
       spec:
         accessModes:
@@ -483,12 +483,12 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: obridge-relay-db-redis-replicas
+  name: otmoic-relay-db-redis-replicas
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: redis
     helm.sh/chart: redis-17.8.0
-    app.kubernetes.io/instance: obridge-relay-db-redis
+    app.kubernetes.io/instance: otmoic-relay-db-redis
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: replica
 spec:
@@ -496,9 +496,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: redis
-      app.kubernetes.io/instance: obridge-relay-db-redis
+      app.kubernetes.io/instance: otmoic-relay-db-redis
       app.kubernetes.io/component: replica
-  serviceName: obridge-relay-db-redis-headless
+  serviceName: otmoic-relay-db-redis-headless
   updateStrategy:
     type: RollingUpdate
   template:
@@ -506,7 +506,7 @@ spec:
       labels:
         app.kubernetes.io/name: redis
         helm.sh/chart: redis-17.8.0
-        app.kubernetes.io/instance: obridge-relay-db-redis
+        app.kubernetes.io/instance: otmoic-relay-db-redis
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: replica
       # annotations:
@@ -518,7 +518,7 @@ spec:
       
       securityContext:
         fsGroup: 1001
-      serviceAccountName: obridge-relay-db-redis
+      serviceAccountName: otmoic-relay-db-redis
       affinity:
         podAffinity:
           
@@ -528,7 +528,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: redis
-                    app.kubernetes.io/instance: obridge-relay-db-redis
+                    app.kubernetes.io/instance: otmoic-relay-db-redis
                     app.kubernetes.io/component: replica
                 topologyKey: kubernetes.io/hostname
               weight: 1
@@ -552,7 +552,7 @@ spec:
             - name: REDIS_REPLICATION_MODE
               value: replica
             - name: REDIS_MASTER_HOST
-              value: obridge-relay-db-redis-master-0.obridge-relay-db-redis-headless.{{ .Release.Namespace }}.svc.cluster.local
+              value: otmoic-relay-db-redis-master-0.otmoic-relay-db-redis-headless.{{ .Release.Namespace }}.svc.cluster.local
             - name: REDIS_MASTER_PORT_NUMBER
               value: "6379"
             - name: ALLOW_EMPTY_PASSWORD
@@ -560,12 +560,12 @@ spec:
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-redis
+                  name: otmoic-relay-db-redis
                   key: redis-password
             - name: REDIS_MASTER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-redis
+                  name: otmoic-relay-db-redis
                   key: redis-password
             - name: REDIS_TLS_ENABLED
               value: "no"
@@ -625,15 +625,15 @@ spec:
       volumes:
         - name: start-scripts
           configMap:
-            name: obridge-relay-db-redis-scripts
+            name: otmoic-relay-db-redis-scripts
             defaultMode: 0755
         - name: health
           configMap:
-            name: obridge-relay-db-redis-health
+            name: otmoic-relay-db-redis-health
             defaultMode: 0755
         - name: config
           configMap:
-            name: obridge-relay-db-redis-configuration
+            name: otmoic-relay-db-redis-configuration
         - name: redis-tmp-conf
           emptyDir: {}
   volumeClaimTemplates:
@@ -641,7 +641,7 @@ spec:
         name: redis-data
         labels:
           app.kubernetes.io/name: redis
-          app.kubernetes.io/instance: obridge-relay-db-redis
+          app.kubernetes.io/instance: otmoic-relay-db-redis
           app.kubernetes.io/component: replica
       spec:
         accessModes:

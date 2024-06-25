@@ -1,4 +1,4 @@
-# Source: obridge-web-app/templates/service.yaml
+# Source: otmoic-web-app/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,7 +14,7 @@ spec:
       port: 9000
       targetPort: 9000
 ---
-# Source: obridge-web-app/templates/deployment.yaml
+# Source: otmoic-web-app/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:

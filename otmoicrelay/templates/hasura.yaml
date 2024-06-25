@@ -26,7 +26,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 stringData:
-  # HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:yr7X3xmc5S@obridge-relay-db-postgresql:5432/postgres"
+  # HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:yr7X3xmc5S@otmoic-relay-db-postgresql:5432/postgres"
   HASURA_GRAPHQL_ADMIN_SECRET: "qwer1234"
 ---
 # Source: hasura/templates/configmap.yaml
@@ -138,13 +138,13 @@ spec:
                 name: hasura
           env:
             - name: POSTGRESQL_HOST
-              value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+              value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
             - name: POSTGRESQL_PORT
               value: "5432"
             - name: POSTGRESQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: password
             - name: HASURA_GRAPHQL_DATABASE_URL
               value: "postgres://postgres:$(POSTGRESQL_PASSWORD)@$(POSTGRESQL_HOST):$(POSTGRESQL_PORT)/postgres"

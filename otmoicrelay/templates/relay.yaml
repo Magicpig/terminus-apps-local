@@ -1,4 +1,4 @@
-# Source: obridge-relay/templates/service.yaml
+# Source: otmoic-relay/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,7 +14,7 @@ spec:
       port: 9102
       targetPort: 9102
 ---
-# Source: obridge-relay/templates/deployment.yaml
+# Source: otmoic-relay/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: relay
-        image: otmoic/otmoic-relay:latest
+        image: otmoic/relay:6cfd8a13
         ports:
           - containerPort: 9102
         resources:
@@ -46,20 +46,20 @@ spec:
             memory: 512Mi
         env:
           - name: POSTGRESQL_HOST
-            value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+            value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
           - name: POSTGRESQL_PORT
             value: "5432"
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                 key: password
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-redis
+                name: otmoic-relay-db-redis
                 key: redis-password
           - name: REDIS_HOST
-            value: 'obridge-relay-db-redis-master'
+            value: 'otmoic-relay-db-redis-master'
           - name: REDIS_PORT
             value: '6379'

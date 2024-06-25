@@ -29,10 +29,11 @@ data:
     966 = "80001"
     60 = "11155111"
     9000 = "43113"
+    501 = "501"
 
 
     [[chainClients]]
-    url = "http://obridge-chain-client-evm-bsc-server-9006:9100"
+    url = "http://otmoic-chain-client-evm-bsc-server-9006:9100"
     initBlockHeight = 38936935
     chainId = "9006" # bsc
     nativeChainId = "97" # bsc testnet
@@ -40,7 +41,7 @@ data:
     historyPath = "/support/history"
 
     [[chainClients]]
-    url = "http://obridge-chain-client-evm-eth-server-60:9100"
+    url = "http://otmoic-chain-client-evm-eth-server-60:9100"
     initBlockHeight = 5579765
     chainId = "60" # eth
     nativeChainId = "11155111" # bsc testnet
@@ -48,7 +49,7 @@ data:
     historyPath = "/support/history"
 
     [[chainClients]]
-    url = "http://obridge-chain-client-evm-avax-server-9000:9100"
+    url = "http://otmoic-chain-client-evm-avax-server-9000:9100"
     initBlockHeight = 31330505
     chainId = "9000" # avax
     nativeChainId = "43113" # bsc testnet
@@ -56,7 +57,7 @@ data:
     historyPath = "/support/history"
 
     [[chainClients]]
-    url = "http://obridge-chain-client-evm-polygon-server-966:9100"
+    url = "http://otmoic-chain-client-evm-polygon-server-966:9100"
     initBlockHeight = 47592195
     chainId = "966" # polygon
     nativeChainId = "80001" # bsc testnet
@@ -92,13 +93,13 @@ spec:
           - name: DBUSER
             value: "postgres"
           - name: DBHOST
-            value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+            value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
           - name: DBPORT
             value: "5432"
           - name: DBPASS
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                 key: password
           ports:
             - containerPort: 1234
@@ -164,13 +165,13 @@ spec:
           - name: DBUSER
             value: "postgres"
           - name: DBHOST
-            value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+            value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
           - name: DBPORT
             value: "5432"
           - name: DBPASS
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                 key: password
           ports:
             - containerPort: 1236
@@ -235,13 +236,13 @@ spec:
           - name: DBUSER
             value: "postgres"
           - name: DBHOST
-            value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+            value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
           - name: DBPORT
             value: "5432"
           - name: DBPASS
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                 key: password
           ports:
             - containerPort: 1235

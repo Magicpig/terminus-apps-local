@@ -1,4 +1,4 @@
-# Source: obridge-relay-adminpanel/templates/service.yaml
+# Source: otmoic-relay-adminpanel/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,7 +14,7 @@ spec:
       port: 9101
       targetPort: 9101
 ---
-# Source: obridge-relay-adminpanel/templates/deployment.yaml
+# Source: otmoic-relay-adminpanel/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,23 +53,23 @@ spec:
           - name: POSTGRES_USERNAME
             value: "postgres"
           - name: POSTGRES_HOST
-            value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+            value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
           - name: POSTGRES_PORT
             value: "5432"
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                 key: password
           - name: REDIS_PWD
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-redis
+                name: otmoic-relay-db-redis
                 key: redis-password
           - name: REDIS_PORT
             value: "6379"
           - name: REDIS_HOST
-            value: obridge-relay-db-redis-master
+            value: otmoic-relay-db-redis-master
         volumeMounts:
         - name: document
           mountPath: /admin-panel/app

@@ -300,11 +300,11 @@ spec:
     accessControlMaxAge: 100
     addVaryHeader: true
 ---
-# Source: obridge-relay/templates/ingress.yaml
+# Source: otmoic-relay/templates/ingress.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-obridge-relay
+  name: ingress-otmoic-relay
   namespace: {{ .Release.Namespace }}
   annotations:
       app.kubernetes.io/ingress.class: traefik-{{ .Release.Namespace }}
@@ -319,11 +319,11 @@ spec:
         - name: otmoicrelay-server
           port: 9102
 ---
-# Source: obridge-relay-adminpanel/templates/ingress.yaml
+# Source: otmoic-relay-adminpanel/templates/ingress.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-obridge-relay-admin-panel
+  name: ingress-otmoic-relay-admin-panel
   namespace: {{ .Release.Namespace }}
   annotations:
       app.kubernetes.io/ingress.class: traefik-{{ .Release.Namespace }}
@@ -341,11 +341,11 @@ spec:
           port: 9101
 
 ---
-# Source: obridge-relay-fep-websocket/templates/ingress.yaml
+# Source: otmoic-relay-fep-websocket/templates/ingress.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-obridge-relay-fep-websocket
+  name: ingress-otmoic-relay-fep-websocket
   namespace: {{ .Release.Namespace }}
   annotations:
       app.kubernetes.io/ingress.class: traefik-{{ .Release.Namespace }}
@@ -361,11 +361,11 @@ spec:
           kind: TraefikService
           passHostHeader: true
 ---
-# Source: obridge-relay-fep-websocket/templates/ingress_redirect.yaml
+# Source: otmoic-relay-fep-websocket/templates/ingress_redirect.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-obridge-relay-fep-websocket-redirect
+  name: ingress-otmoic-relay-fep-websocket-redirect
   namespace: {{ .Release.Namespace }}
   annotations:
       app.kubernetes.io/ingress.class: traefik-{{ .Release.Namespace }}
@@ -381,7 +381,7 @@ spec:
           kind: TraefikService
           passHostHeader: true
 ---
-# Source: obridge-relay-fep-websocket/templates/service_lb.yaml
+# Source: otmoic-relay-fep-websocket/templates/service_lb.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: TraefikService
 metadata:
@@ -410,7 +410,7 @@ spec:
         sameSite: none
         secure: true
 ---
-# Source: obridge-relay-fep-websocket/templates/service_lb_redirect.yaml
+# Source: otmoic-relay-fep-websocket/templates/service_lb_redirect.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: TraefikService
 metadata:
@@ -439,11 +439,11 @@ spec:
     prefixes:
       - /app
 ---
-# Source: obridge-web-app/templates/ingress.yaml
+# Source: otmoic-web-app/templates/ingress.yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-obridge-web-app
+  name: ingress-otmoic-web-app
   namespace: {{ .Release.Namespace }}
   annotations:
       app.kubernetes.io/ingress.class: traefik-{{ .Release.Namespace }}
