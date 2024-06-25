@@ -265,7 +265,7 @@ spec:
             defaultMode: 420
       containers:
       - name: lpnode-admin
-        image: otmoic/lpnode-admin:f51e2eb5
+        image: otmoic/lpnode-admin:2ecdee1e
         imagePullPolicy: Always
         resources:
           requests:
