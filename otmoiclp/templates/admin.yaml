@@ -159,6 +159,10 @@ data:
               type: "string",
             },
             {
+              name: "deployName",
+              type: "string",
+            },
+            {
               name: "envList",
               type: "array",
             },
@@ -256,6 +260,10 @@ spec:
     spec:
       serviceAccountName: lpnode-sa
       volumes:
+        - name: user-script
+          hostPath:
+            path: {{ .Values.userspace.userData }}/UserScript
+            type: DirectoryOrCreate
         - name: base-data-config
           configMap:
             name: otmoic-admin-base-data
@@ -322,3 +330,5 @@ spec:
             value: {{ .Values.user.zone }}
           - name: USERSPACE_DATA_PATH
             value: {{ .Values.userspace.userData }}
+          - name: NAMESPACE
+            value: {{ .Release.Namespace }}
