@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: web-app
-        image: otmoic/relay-web:df518e18
+        image: otmoic/relay-web:907e628c
         resources:
           requests:
             cpu: 1m

@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: otmoic-chain-client-solana-solana-501
-        image: otmoic/chainclient-solana:ebd453c2
+        image: otmoic/chainclient-solana:b9f09a69
         ports:
           - containerPort: 9100
         resources:
