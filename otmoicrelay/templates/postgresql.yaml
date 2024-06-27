@@ -1,46 +1,65 @@
+{{- $ha_pgpool_secret := (lookup "v1" "Secret" .Release.Namespace "otmoic-relay-db-postgresql-postgresql-ha-pgpool") -}}
+{{- $admin_password := "" -}}
+{{ if $ha_pgpool_secret -}}
+{{- $admin_password = (index $ha_pgpool_secret "data" "admin-password") -}}
+{{ else -}}
+{{- $admin_password = randAlphaNum 16 | b64enc}}
+{{- end -}}
+
+{{- $ha_postgresql_secret := (lookup "v1" "Secret" .Release.Namespace "otmoic-relay-db-postgresql-postgresql-ha-postgresql") -}}
+{{- $postgresql_secret_password := "" -}}
+{{- $postgresql_secret_repmgr_password := "" -}}
+{{ if $ha_postgresql_secret -}}
+{{- $postgresql_secret_password = (index $ha_postgresql_secret "data" "password") -}}
+{{- $postgresql_secret_repmgr_password = (index $ha_postgresql_secret "data" "repmgr-password") -}}
+{{ else -}}
+{{- $postgresql_secret_password = randAlphaNum 16 | b64enc}}
+{{- $postgresql_secret_repmgr_password = randAlphaNum 16 | b64enc}}
+{{- end -}}
+---
 # Source: postgresql-ha/templates/pgpool/secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-pgpool
+  name: otmoic-relay-db-postgresql-postgresql-ha-pgpool
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: pgpool
 type: Opaque
 data:
-  admin-password: {{ randAlphaNum 16 | b64enc }}
+  admin-password: {{ $admin_password }}
 ---
 # Source: postgresql-ha/templates/postgresql/secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: postgresql
 type: Opaque
 data:
-  password: {{ randAlphaNum 16 | b64enc }}
-  repmgr-password: {{ randAlphaNum 16 | b64enc }}
+  password: {{ $postgresql_secret_password }}
+  repmgr-password: {{ $postgresql_secret_repmgr_password }}
 ---
 # Source: postgresql-ha/templates/postgresql/hooks-scripts-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-postgresql-hooks-scripts
+  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql-hooks-scripts
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: postgresql
 data:
@@ -108,12 +127,12 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-pgpool
+  name: otmoic-relay-db-postgresql-postgresql-ha-pgpool
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: pgpool
 spec:
@@ -127,19 +146,19 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/name: postgresql-ha
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/component: pgpool
 ---
 # Source: postgresql-ha/templates/postgresql/service-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-postgresql-headless
+  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -151,7 +170,7 @@ spec:
       protocol: TCP
   selector:
     app.kubernetes.io/name: postgresql-ha
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/component: postgresql
     role: data
 ---
@@ -159,12 +178,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: postgresql
 spec:
@@ -176,7 +195,7 @@ spec:
       protocol: TCP
   selector:
     app.kubernetes.io/name: postgresql-ha
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/component: postgresql
     role: data
 ---
@@ -184,12 +203,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-pgpool
+  name: otmoic-relay-db-postgresql-postgresql-ha-pgpool
   namespace: {{ .Release.Namespace }}
   labels: 
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: pgpool
 spec:
@@ -197,14 +216,14 @@ spec:
   selector:
     matchLabels: 
       app.kubernetes.io/name: postgresql-ha
-      app.kubernetes.io/instance: obridge-relay-db-postgresql
+      app.kubernetes.io/instance: otmoic-relay-db-postgresql
       app.kubernetes.io/component: pgpool
   template:
     metadata:
       labels: 
         app.kubernetes.io/name: postgresql-ha
         helm.sh/chart: postgresql-ha-11.2.1
-        app.kubernetes.io/instance: obridge-relay-db-postgresql
+        app.kubernetes.io/instance: otmoic-relay-db-postgresql
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: pgpool
     spec:
@@ -218,7 +237,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: postgresql-ha
-                    app.kubernetes.io/instance: obridge-relay-db-postgresql
+                    app.kubernetes.io/instance: otmoic-relay-db-postgresql
                     app.kubernetes.io/component: pgpool
                 topologyKey: kubernetes.io/hostname
               weight: 1
@@ -240,13 +259,13 @@ spec:
             - name: BITNAMI_DEBUG
               value: "false"
             - name: PGPOOL_BACKEND_NODES
-              value: 0:obridge-relay-db-postgresql-postgresql-ha-postgresql-0.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,1:obridge-relay-db-postgresql-postgresql-ha-postgresql-1.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,2:obridge-relay-db-postgresql-postgresql-ha-postgresql-2.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,
+              value: 0:otmoic-relay-db-postgresql-postgresql-ha-postgresql-0.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,1:otmoic-relay-db-postgresql-postgresql-ha-postgresql-1.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,2:otmoic-relay-db-postgresql-postgresql-ha-postgresql-2.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless:5432,
             - name: PGPOOL_SR_CHECK_USER
               value: "repmgr"
             - name: PGPOOL_SR_CHECK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: repmgr-password
             - name: PGPOOL_SR_CHECK_DATABASE
               value: "postgres"
@@ -257,14 +276,14 @@ spec:
             - name: PGPOOL_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: password
             - name: PGPOOL_ADMIN_USERNAME
               value: "admin"
             - name: PGPOOL_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-pgpool
+                  name: otmoic-relay-db-postgresql-postgresql-ha-pgpool
                   key: admin-password
             - name: PGPOOL_AUTHENTICATION_METHOD
               value: "scram-sha-256"
@@ -281,9 +300,9 @@ spec:
             - name: PGPOOL_RESERVED_CONNECTIONS
               value: '1'
             - name: PGPOOL_MAX_POOL
-              value: "10"
-            - name: PGPOOL_CHILD_MAX_CONNECTIONS
               value: "100"
+            - name: PGPOOL_CHILD_MAX_CONNECTIONS
+              value: "1000"
             - name: PGPOOL_CHILD_LIFE_TIME
               value: "300"
             - name: PGPOOL_CLIENT_IDLE_LIMIT
@@ -329,25 +348,25 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: postgresql-ha
     helm.sh/chart: postgresql-ha-11.2.1
-    app.kubernetes.io/instance: obridge-relay-db-postgresql
+    app.kubernetes.io/instance: otmoic-relay-db-postgresql
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: postgresql
     role: data
 spec:
   replicas: 3
   podManagementPolicy: Parallel
-  serviceName: obridge-relay-db-postgresql-postgresql-ha-postgresql-headless
+  serviceName: otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: postgresql-ha
-      app.kubernetes.io/instance: obridge-relay-db-postgresql
+      app.kubernetes.io/instance: otmoic-relay-db-postgresql
       app.kubernetes.io/component: postgresql
       role: data
   template:
@@ -355,7 +374,7 @@ spec:
       labels:
         app.kubernetes.io/name: postgresql-ha
         helm.sh/chart: postgresql-ha-11.2.1
-        app.kubernetes.io/instance: obridge-relay-db-postgresql
+        app.kubernetes.io/instance: otmoic-relay-db-postgresql
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: postgresql
         role: data
@@ -370,7 +389,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: postgresql-ha
-                    app.kubernetes.io/instance: obridge-relay-db-postgresql
+                    app.kubernetes.io/instance: otmoic-relay-db-postgresql
                     app.kubernetes.io/component: postgresql
                 topologyKey: kubernetes.io/hostname
               weight: 1
@@ -408,7 +427,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: password
             - name: POSTGRES_DB
               value: "postgres"
@@ -454,13 +473,13 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: REPMGR_PARTNER_NODES
-              value: obridge-relay-db-postgresql-postgresql-ha-postgresql-0.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,obridge-relay-db-postgresql-postgresql-ha-postgresql-1.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,obridge-relay-db-postgresql-postgresql-ha-postgresql-2.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,
+              value: otmoic-relay-db-postgresql-postgresql-ha-postgresql-0.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,otmoic-relay-db-postgresql-postgresql-ha-postgresql-1.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,otmoic-relay-db-postgresql-postgresql-ha-postgresql-2.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local,
             - name: REPMGR_PRIMARY_HOST
-              value: "obridge-relay-db-postgresql-postgresql-ha-postgresql-0.obridge-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local"
+              value: "otmoic-relay-db-postgresql-postgresql-ha-postgresql-0.otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local"
             - name: REPMGR_NODE_NAME
               value: "$(MY_POD_NAME)"
             - name: REPMGR_NODE_NETWORK_NAME
-              value: "$(MY_POD_NAME).obridge-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local"
+              value: "$(MY_POD_NAME).otmoic-relay-db-postgresql-postgresql-ha-postgresql-headless.$(REPMGR_NAMESPACE).svc.cluster.local"
             - name: REPMGR_NODE_TYPE
               value: "data"
             - name: REPMGR_LOG_LEVEL
@@ -476,7 +495,7 @@ spec:
             - name: REPMGR_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: repmgr-password
             - name: REPMGR_DATABASE
               value: "repmgr"
@@ -531,7 +550,7 @@ spec:
       volumes:
         - name: hooks-scripts
           configMap:
-            name: obridge-relay-db-postgresql-postgresql-ha-postgresql-hooks-scripts
+            name: otmoic-relay-db-postgresql-postgresql-ha-postgresql-hooks-scripts
             defaultMode: 0755
   volumeClaimTemplates:
     - metadata:

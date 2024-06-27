@@ -1,39 +1,39 @@
-# Source: obridge-chain-client-near/templates/service.yaml
+# Source: otmoic-chain-client-near/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: obridge-chain-client-near-server-397
+  name: otmoic-chain-client-near-server-397
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
-    app: obridge-chain-client-near-397
+    app: otmoic-chain-client-near-397
   type: ClusterIP
   ports:
     - protocol: TCP
-      name: obridge-chain-client-near-api-397
+      name: otmoic-chain-client-near-api-397
       port: 9100
       targetPort: 9100
 ---
-# Source: obridge-chain-client-near/templates/deployment.yaml
+# Source: otmoic-chain-client-near/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: obridge-chain-client-near-397
+  name: otmoic-chain-client-near-397
   namespace: {{ .Release.Namespace }}
   labels:
-    app: obridge-chain-client-near-397
+    app: otmoic-chain-client-near-397
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: obridge-chain-client-near-397
+      app: otmoic-chain-client-near-397
   template:
     metadata:
       labels:
-        app: obridge-chain-client-near-397
+        app: otmoic-chain-client-near-397
     spec:
       containers:
-      - name: obridge-chain-client-near-397
+      - name: otmoic-chain-client-near-397
         image: otmoic/otmoic-chainclient-near:latest
         resources:
           requests:
@@ -48,12 +48,12 @@ spec:
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: obridge-relay-db-redis
+                name: otmoic-relay-db-redis
                 key: redis-password
           - name: NEAR_CLIENT_PORT
             value: "9100"
           - name: REDIS_HOST
-            value: "obridge-relay-db-redis-master"
+            value: "otmoic-relay-db-redis-master"
           - name: CONTRACT_ADDRESS
             value: "otv1.saidev.testnet"
           - name: SYSTEM_CHAIN_ID
@@ -89,4 +89,4 @@ spec:
           - name: SERVER_URL_REFUNDED
             value: "http://otmoicrelay-server:9102/relay/chain_client/on_refunded"
           - name: TOKEN_MAP
-            value: "{\"obridge-test-tokena.testnet\":{\"receiver_id\":\"0xc46adbee202892c5c989d515763a575bce534fa09c8bb4a13bcd7289a516e97b\"}}"
+            value: "{\"otmoic-test-tokena.testnet\":{\"receiver_id\":\"0xc46adbee202892c5c989d515763a575bce534fa09c8bb4a13bcd7289a516e97b\"}}"

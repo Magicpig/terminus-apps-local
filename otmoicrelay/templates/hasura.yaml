@@ -1,3 +1,11 @@
+{{- $hasura_secret := (lookup "v1" "Secret" .Release.Namespace "hasura") -}}
+{{- $graphql_admin_secret := "" -}}
+{{ if $hasura_secret -}}
+{{- $graphql_admin_secret = (index $hasura_secret "data" "HASURA_GRAPHQL_ADMIN_SECRET") -}}
+{{ else -}}
+{{- $graphql_admin_secret = randAlphaNum 16 | b64enc}}
+{{- end -}}
+---
 # https://stackoverflow.com/questions/54173581/combining-multiple-k8s-secrets-into-an-env-variable
 # Source: hasura/templates/serviceaccount.yaml
 apiVersion: v1
@@ -25,9 +33,9 @@ metadata:
     app.kubernetes.io/version: "v2.16.0-ce"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
-stringData:
-  # HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:yr7X3xmc5S@obridge-relay-db-postgresql:5432/postgres"
-  HASURA_GRAPHQL_ADMIN_SECRET: "qwer1234"
+data:
+  # HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:yr7X3xmc5S@otmoic-relay-db-postgresql:5432/postgres"
+  HASURA_GRAPHQL_ADMIN_SECRET: {{ $graphql_admin_secret }}
 ---
 # Source: hasura/templates/configmap.yaml
 apiVersion: v1
@@ -138,13 +146,13 @@ spec:
                 name: hasura
           env:
             - name: POSTGRESQL_HOST
-              value: "obridge-relay-db-postgresql-postgresql-ha-pgpool"
+              value: "otmoic-relay-db-postgresql-postgresql-ha-pgpool"
             - name: POSTGRESQL_PORT
               value: "5432"
             - name: POSTGRESQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: obridge-relay-db-postgresql-postgresql-ha-postgresql
+                  name: otmoic-relay-db-postgresql-postgresql-ha-postgresql
                   key: password
             - name: HASURA_GRAPHQL_DATABASE_URL
               value: "postgres://postgres:$(POSTGRESQL_PASSWORD)@$(POSTGRESQL_HOST):$(POSTGRESQL_PORT)/postgres"
