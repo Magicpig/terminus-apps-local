@@ -40,29 +40,49 @@ data:
     registerPath = "/support/register"
     historyPath = "/support/history"
 
+
     [[chainClients]]
-    url = "http://otmoic-chain-client-evm-eth-server-60:9100"
-    initBlockHeight = 5579765
-    chainId = "60" # eth
-    nativeChainId = "11155111" # bsc testnet
+    url = "http://otmoic-chain-client-evm-bsc-server-9006:9100"
+    initBlockHeight = 41611350
+    chainId = "9006" # bsc
+    nativeChainId = "97" # bsc testnet
     registerPath = "/support/register"
     historyPath = "/support/history"
 
     [[chainClients]]
-    url = "http://otmoic-chain-client-evm-avax-server-9000:9100"
-    initBlockHeight = 31330505
-    chainId = "9000" # avax
-    nativeChainId = "43113" # bsc testnet
+    url = "http://otmoic-chain-client-solana-solana-server-501:9100"
+    initBlockHeight = 274268013
+    chainId = "501" # solana
+    nativeChainId = "501" # solana dev net
     registerPath = "/support/register"
     historyPath = "/support/history"
 
-    [[chainClients]]
-    url = "http://otmoic-chain-client-evm-polygon-server-966:9100"
-    initBlockHeight = 47592195
-    chainId = "966" # polygon
-    nativeChainId = "80001" # bsc testnet
-    registerPath = "/support/register"
-    historyPath = "/support/history"
+    
+    # [[chainClients]]
+    # url = "http://otmoic-chain-client-evm-eth-server-60:9100"
+    # initBlockHeight = 5579765
+    # chainId = "60" # eth
+    # nativeChainId = "11155111" # bsc testnet
+    # registerPath = "/support/register"
+    # historyPath = "/support/history"
+
+    # [[chainClients]]
+    # url = "http://otmoic-chain-client-evm-avax-server-9000:9100"
+    # initBlockHeight = 31330505
+    # chainId = "9000" # avax
+    # nativeChainId = "43113" # bsc testnet
+    # registerPath = "/support/register"
+    # historyPath = "/support/history"
+
+    # [[chainClients]]
+    # url = "http://otmoic-chain-client-evm-polygon-server-966:9100"
+    # initBlockHeight = 47592195
+    # chainId = "966" # polygon
+    # nativeChainId = "80001" # bsc testnet
+    # registerPath = "/support/register"
+    # historyPath = "/support/history"
+
+
 
 kind: ConfigMap
 metadata:
