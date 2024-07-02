@@ -64,6 +64,15 @@ data:
     registerPath = "/support/register"
     historyPath = "/support/history"
 
+    
+    [[chainClients]]
+    url = "http://otmoic-chain-client-solana-solana-server-501:9100"
+    initBlockHeight = 308781961
+    chainId = "501" # solana
+    nativeChainId = "501" # bsc testnet
+    registerPath = "/support/register"
+    historyPath = "/support/history"
+
 kind: ConfigMap
 metadata:
   name: reputation-config
