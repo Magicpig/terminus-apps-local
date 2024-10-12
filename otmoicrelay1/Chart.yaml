@@ -1,5 +1,5 @@
 apiVersion: v2
-name: otmoicrelay
+name: otmoicrelay1
 description: Otmoic Relay
 maintainers:
 - name: bytetrade
